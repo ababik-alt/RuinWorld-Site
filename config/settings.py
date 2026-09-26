@@ -7,9 +7,15 @@ load_dotenv(BASE_DIR / ".env")
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-key")
 DEBUG = os.getenv("DJANGO_DEBUG", "True").lower() == "true"
-ALLOWED_HOSTS = [x.strip() for x in os.getenv(
-    "DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost"
-).split(",") if x.strip()]
+
+ALLOWED_HOSTS = [
+    x.strip()
+    for x in os.getenv(
+        "DJANGO_ALLOWED_HOSTS",
+        "127.0.0.1,localhost"
+    ).split(",")
+    if x.strip()
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -23,6 +29,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -33,18 +41,22 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
-TEMPLATES = [{
-    "BACKEND": "django.template.backends.django.DjangoTemplates",
-    "DIRS": [BASE_DIR / "templates"],
-    "APP_DIRS": True,
-    "OPTIONS": {
-        "context_processors": [
-            "django.template.context_processors.request",
-            "django.contrib.auth.context_processors.auth",
-            "django.contrib.messages.context_processors.messages",
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [
+            BASE_DIR / "templates",
         ],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
     },
-}]
+]
 
 WSGI_APPLICATION = "config.wsgi.application"
 
@@ -59,17 +71,81 @@ AUTH_PASSWORD_VALIDATORS = []
 
 LANGUAGE_CODE = "ru-ru"
 TIME_ZONE = "Europe/Warsaw"
+
 USE_I18N = True
 USE_TZ = True
 
+
+# =========================
+# STATIC FILES
+# =========================
+
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+
+# =========================
+# MEDIA
+# =========================
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+
+# =========================
+# DJANGO
+# =========================
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-RCON_HOST = os.getenv("RCON_HOST", "127.0.0.1")
-RCON_PORT = int(os.getenv("RCON_PORT", "25575"))
-RCON_PASSWORD = os.getenv("RCON_PASSWORD", "")
+
+# =========================
+# RCON
+# =========================
+
+RCON_HOST = os.getenv(
+    "RCON_HOST",
+    "127.0.0.1"
+)
+
+RCON_PORT = int(
+    os.getenv(
+        "RCON_PORT",
+        "25575"
+    )
+)
+
+RCON_PASSWORD = os.getenv(
+    "RCON_PASSWORD",
+    ""
+)
+
+
+# =========================
+# HTTPS / RENDER
+# =========================
+
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = (
+        "HTTP_X_FORWARDED_PROTO",
+        "https"
+    )
+
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+    SECURE_SSL_REDIRECT = True
