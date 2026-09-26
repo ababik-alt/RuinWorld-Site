@@ -2,3 +2,4 @@ Django>=6.0,<7.0
 mcrcon>=0.7.0
 python-dotenv>=1.0.0
 Pillow>=11.0.0
+gunicorn>=23.0.0
