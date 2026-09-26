@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Заказ #{{ order.id }}{% endblock %}
+
+{% block content %}
+<section class="payment-page">
+    <div class="container">
+        <div class="payment-card">
+            <div class="eyebrow">ЗАКАЗ #{{ order.id }}</div>
+            <h1>{{ order.product.name }}</h1>
+
+            <div class="payment-summary">
+                <div><span>Игрок</span><strong>{{ order.player }}</strong></div>
+                <div><span>Сумма</span><strong>{{ order.amount }} zł</strong></div>
+                <div><span>Статус</span><strong>{{ order.get_status_display }}</strong></div>
+            </div>
+
+            <a class="btn btn-secondary btn-block" href="{% url 'index' %}">
+                На главную
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

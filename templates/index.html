@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}RuinShop — Донат-магазин{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container hero-grid">
+        <div class="hero-copy">
+            <div class="eyebrow">MINECRAFT • RUINWORLD</div>
+
+            <h1>
+                Прокачай
+                <span>свой аккаунт</span>
+            </h1>
+
+            <p>
+                Привилегии, донат-монеты и автоматическая выдача на сервер
+                сразу после RuinPay.
+            </p>
+
+            <div class="hero-actions">
+                <a class="btn btn-primary" href="#shop">Смотреть донат</a>
+                <a class="btn btn-secondary" href="#how">Как это работает</a>
+            </div>
+
+            <div class="hero-stats">
+                <div><strong>23</strong><span>товаров</span></div>
+                <div><strong>24/7</strong><span>автовыдача</span></div>
+                <div><strong>Реальная</strong><span>оплата</span></div>
+            </div>
+        </div>
+
+        <div class="hero-showcase">
+            <div class="hero-glow"></div>
+            <img src="/static/img/god.svg" alt="GOD">
+            <div class="showcase-bottom">
+                <span>Легендарная привилегия</span>
+                <strong>GOD</strong>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="feature-strip">
+    <div class="container strip-inner">
+        <span>⚡ МОМЕНТАЛЬНАЯ ВЫДАЧА</span>
+        <span>⚡⚡ Наш ip 26.51.11.72:25570 Наш ip ⚡⚡</span>
+        <span>✦ КАСТОМНОЕ КОЛИЧЕСТВО МОНЕТ</span>
+    </div>
+</section>
+
+<section class="section" id="shop">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <div class="eyebrow">МАГАЗИН</div>
+                <h2>Донаты RuinWorld</h2>
+            </div>
+            <p>Цены, команды и картинки можно менять через админку.</p>
+        </div>
+
+        <div class="product-grid">
+            {% for product in products %}
+            <article class="product-card" style="--accent: {{ product.accent }};">
+                {% if product.badge %}
+                    <div class="product-badge">{{ product.badge }}</div>
+                {% endif %}
+
+                <div class="product-image-wrap">
+                    <div class="product-glow"></div>
+                    <img src="{{ product.display_image }}" alt="{{ product.name }}">
+                </div>
+
+                <div class="product-body">
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.description }}</p>
+
+                    <div class="product-footer">
+                        {% if product.is_currency %}
+                            <div class="price">
+                                <strong>{{ product.price_per_unit }} zł</strong>
+                                <span>/ монета</span>
+                            </div>
+                        {% else %}
+                            <div class="price">
+                                <strong>{{ product.price }} zł</strong>
+                            </div>
+                        {% endif %}
+
+                        <a class="card-button" href="{% url 'product_detail' product.slug %}">
+                            Купить →
+                        </a>
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+                <p>Товаров нет. Выполни <code>python manage.py seed_demo</code>.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section section-dark" id="how">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <div class="eyebrow">3 ШАГА</div>
+                <h2>Как купить</h2>
+            </div>
+        </div>
+
+        <div class="steps">
+            <div class="step">
+                <span>01</span>
+                <h3>Выбираешь товар</h3>
+                <p>Привилегию или любое количество донат-монет.</p>
+            </div>
+
+            <div class="step">
+                <span>02</span>
+                <h3>Вводишь ник</h3>
+                <p>Сайт сам считает цену и создаёт заказ.</p>
+            </div>
+
+            <div class="step">
+                <span>03</span>
+                <h3>RuinPay</h3>
+                <p>После успешной RuinPay команда уходит на Minecraft-сервер.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

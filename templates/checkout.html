@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Оформление — {{ product.name }}{% endblock %}
+{% block content %}
+<section class="checkout-wrap">
+  <div class="checkout-shell container">
+    <div class="checkout-info">
+      <div class="eyebrow">RUINWORLD STORE</div>
+      <h1>{{ product.name }}</h1>
+      <p>{{ product.description }}</p>
+      <div class="checkout-price">
+        {% if product.is_currency %}
+          <span>от</span> {{ product.price_per_unit }} zł / шт.
+        {% else %}
+          {{ product.price }} zł
+        {% endif %}
+      </div>
+    </div>
+
+    <form method="post" class="checkout-form">
+      {% csrf_token %}
+      <label>Ник Minecraft</label>
+      <input class="input" name="player" maxlength="16" required placeholder="Zachmyrik">
+
+      {% if product.is_currency %}
+      <label>Количество</label>
+      <input class="input" name="quantity" type="number"
+             min="{{ product.min_quantity }}" max="{{ product.max_quantity }}"
+             value="{{ product.min_quantity }}" required>
+      {% endif %}
+
+      <button class="btn btn-primary btn-block" type="submit">Продолжить</button>
+      <a class="btn btn-secondary btn-block" href="{% url 'index' %}">Назад</a>
+    </form>
+  </div>
+</section>
+{% endblock %}

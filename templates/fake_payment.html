@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}RuinPay TEST{% endblock %}
+
+{% block content %}
+<section class="payment-page">
+    <div class="container">
+        <div class="payment-card">
+            <div class="test-badge">TEST MODE</div>
+            <div class="payment-logo">Ruin<span>Pay</span></div>
+
+            <h1>{{ order.amount }} zł</h1>
+            <p>Заказ #{{ order.id }} • {{ order.product.name }}</p>
+
+            <div class="payment-summary">
+                <div><span>Игрок</span><strong>{{ order.player }}</strong></div>
+
+                {% if order.product.is_currency %}
+                    <div><span>Количество</span><strong>{{ order.quantity }}</strong></div>
+                {% endif %}
+
+                <div><span>Статус</span><strong>{{ order.get_status_display }}</strong></div>
+            </div>
+
+            <div class="payment-warning">
+                Это фейковая тестовая платёжная страница.
+                Реальные деньги не списываются и не принимаются.
+            </div>
+
+            <form method="post" action="{% url 'fake_payment_success' order.id %}">
+                {% csrf_token %}
+                <button class="btn btn-primary btn-block" type="submit">
+                    ✓ Имитировать успешную оплату
+                </button>
+            </form>
+
+            <form method="post" action="{% url 'fake_payment_cancel' order.id %}">
+                {% csrf_token %}
+                <button class="btn btn-secondary btn-block cancel-button" type="submit">
+                    Отменить
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

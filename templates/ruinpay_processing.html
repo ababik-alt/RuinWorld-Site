@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}RuinPay — обработка{% endblock %}
+{% block content %}
+<section class="rp-page">
+  <div class="rp-wrap rp-processing">
+    <div class="rp-logo"><span>R</span> RuinPay</div>
+
+    <div class="rp-loader">
+      <div class="rp-ring"></div>
+    </div>
+
+    <h1>Обрабатываем платёж</h1>
+    <p id="rp-status">Связываемся с платёжным модулем…</p>
+
+    <div class="rp-progress">
+      <div class="rp-progress-bar" id="rp-progress"></div>
+    </div>
+
+    <div class="rp-summary">
+      <div><span>Заказ</span><strong>#{{ order.id }}</strong></div>
+      <div><span>Игрок</span><strong>{{ order.player }}</strong></div>
+      <div><span>Сумма</span><strong>{{ order.amount }} zł</strong></div>
+    </div>
+
+    <form id="finish-form" method="post" action="{% url 'ruinpay_finish' order.id %}">
+      {% csrf_token %}
+    </form>
+  </div>
+</section>
+
+<script>
+const statuses = [
+  "Проверяем данные заказа…",
+  "Подтверждаем транзакцию…",
+  "Получаем подтверждение…",
+  "Готово"
+];
+let i = 0;
+const text = document.getElementById("rp-status");
+const bar = document.getElementById("rp-progress");
+const timer = setInterval(() => {
+  if (i < statuses.length) {
+    text.textContent = statuses[i];
+    bar.style.width = ((i + 1) / statuses.length * 100) + "%";
+    i++;
+  } else {
+    clearInterval(timer);
+    document.getElementById("finish-form").submit();
+  }
+}, 850);
+</script>
+{% endblock %}

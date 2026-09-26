@@ -1,0 +1,48 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}RuinShop Store{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container header-inner">
+        <a href="{% url 'index' %}" class="brand">
+            <span class="brand-icon">R</span>
+            <span class="brand-text">RUIN<span>WORLD</span></span>
+        </a>
+
+        <nav class="main-nav">
+            <a href="{% url 'index' %}#shop">Донат</a>
+            <a href="{% url 'index' %}#how">Как купить</a>
+            <a href="/admin/">Админка</a>
+        </nav>
+    </div>
+</header>
+
+{% if messages %}
+<div class="container messages">
+    {% for message in messages %}
+        <div class="message">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<main>
+{% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <strong>RuinShop</strong>
+        <span>RuinPay работает только в RuinPay — реальные деньги не списываются.</span>
+    </div>
+</footer>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

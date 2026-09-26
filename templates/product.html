@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} — RuinWorld{% endblock %}
+
+{% block content %}
+<section class="product-page">
+    <div class="container">
+        <div class="product-detail" style="--accent: {{ product.accent }};">
+            <div class="detail-visual">
+                <div class="product-glow"></div>
+                <img src="{{ product.display_image }}" alt="{{ product.name }}">
+            </div>
+
+            <div class="detail-info">
+                {% if product.badge %}
+                    <div class="product-badge detail-badge">{{ product.badge }}</div>
+                {% endif %}
+
+                <div class="eyebrow">
+                    {% if product.is_currency %}ДОНАТ-ВАЛЮТА{% else %}ПРИВИЛЕГИЯ{% endif %}
+                </div>
+
+                <h1>{{ product.name }}</h1>
+                <p>{{ product.description }}</p>
+
+                <div class="detail-price">
+                    {% if product.is_currency %}
+                        <strong>{{ product.price_per_unit }} zł</strong>
+                        <span>за 1 монету</span>
+                    {% else %}
+                        <strong>{{ product.price }} zł</strong>
+                        <span>разовая покупка</span>
+                    {% endif %}
+                </div>
+
+                <a class="btn btn-primary btn-block" href="{% url 'checkout' product.slug %}">
+                    Перейти к покупке
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

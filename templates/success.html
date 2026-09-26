@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Заказ завершён{% endblock %}
+{% block content %}
+<section class="rp-page">
+  <div class="rp-wrap rp-success">
+    <div class="rp-success-icon">✓</div>
+    <div class="eyebrow">RUINPAY</div>
+    <h1>Платёж завершён</h1>
+    <p>{{ order.product.name }} выдан игроку <strong>{{ order.player }}</strong>.</p>
+
+    <div class="rp-summary">
+      <div><span>Заказ</span><strong>#{{ order.id }}</strong></div>
+      <div><span>Сумма</span><strong>{{ order.amount }} zł</strong></div>
+      <div><span>Статус</span><strong>{{ order.get_status_display }}</strong></div>
+    </div>
+
+    <a href="{% url 'index' %}" class="rp-pay">Вернуться в магазин</a>
+  </div>
+</section>
+{% endblock %}

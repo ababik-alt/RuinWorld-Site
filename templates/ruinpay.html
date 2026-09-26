@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}RuinPay — заказ #{{ order.id }}{% endblock %}
+{% block content %}
+<section class="rp-page">
+  <div class="rp-wrap">
+    <div class="rp-top">
+      <div>
+        <div class="rp-logo"><span>R</span> RuinPay</div>
+        <div class="rp-sub">Безопасное подтверждение заказа</div>
+      </div>
+      <div class="rp-lock">⌁</div>
+    </div>
+
+    <div class="rp-merchant">
+      <div class="rp-server">RW</div>
+      <div>
+        <strong>RuinWorld</strong>
+        <div>Заказ #{{ order.id }}</div>
+      </div>
+    </div>
+
+    <div class="rp-amount">
+      <div>К оплате</div>
+      <strong>{{ order.amount }} zł</strong>
+    </div>
+
+    <form method="post" class="rp-form" id="rp-form">
+      {% csrf_token %}
+
+      <label class="rp-method active">
+        <input type="radio" name="method" value="blik" checked>
+        <div class="rp-icon">B</div>
+        <div class="rp-method-text">
+          <strong>BLIK</strong>
+          <span>Быстрое подтверждение</span>
+        </div>
+        <div class="rp-radio"></div>
+      </label>
+
+      <label class="rp-method">
+        <input type="radio" name="method" value="card">
+        <div class="rp-icon">▰</div>
+        <div class="rp-method-text">
+          <strong>Карта</strong>
+          <span>Visa / Mastercard</span>
+        </div>
+        <div class="rp-radio"></div>
+      </label>
+
+      <label class="rp-method">
+        <input type="radio" name="method" value="transfer">
+        <div class="rp-icon">↗</div>
+        <div class="rp-method-text">
+          <strong>Перевод</strong>
+          <span>Онлайн-банкинг</span>
+        </div>
+        <div class="rp-radio"></div>
+      </label>
+
+      <button class="rp-pay" type="submit">Оплатить {{ order.amount }} zł</button>
+    </form>
+
+    <div class="rp-note">
+      RuinPay не запрашивает номер карты, CVV, пароль банка или настоящий BLIK-код.
+    </div>
+  </div>
+</section>
+
+<script>
+document.querySelectorAll('.rp-method').forEach(el => {
+  el.addEventListener('click', () => {
+    document.querySelectorAll('.rp-method').forEach(x => x.classList.remove('active'));
+    el.classList.add('active');
+  });
+});
+</script>
+{% endblock %}
